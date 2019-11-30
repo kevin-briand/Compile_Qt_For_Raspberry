@@ -1,0 +1,15 @@
+source Variables
+
+QT_MODULE='qtwebsockets'
+
+cd ~/raspi/
+git clone git://code.qt.io/qt/$QT_MODULE.git -b $QT_VERSION
+cd $QT_MODULE
+
+~/raspi/qt5/bin/qmake
+make
+make install
+
+rsync -avz --rsh="sshpass -p $RPI_PASSWORD ssh -o StrictHostKeyChecking=no -l $RPI_LOGIN" $RPI_IP:/usr/local
+
+cp -r $QT_MODULE/* qtbase/

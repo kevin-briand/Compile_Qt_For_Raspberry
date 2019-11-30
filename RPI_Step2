@@ -1,0 +1,3 @@
+echo 'Uncomment the deb-src line'
+echo 'Press Ctrl+O, Ctrl+X'
+sudo nano /etc/apt/sources.list

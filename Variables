@@ -1,0 +1,11 @@
+
+#Variables
+QT_VERSION='5.13'
+RPI_IP='192.168.1.73'
+RPI_LOGIN='pi'
+RPI_PASSWORD=''
+
+#linux-rasp-pi-g++ for RPi
+#linux-rasp-pi2-g++ for RPi2
+#linux-rasp-pi3-g++ for RPi3
+RPI_VERSION='linux-rasp-pi-g++'

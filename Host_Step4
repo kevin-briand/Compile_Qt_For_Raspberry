@@ -1,0 +1,34 @@
+source Variables
+
+sudo apt-get install git rsync make g++
+
+mkdir ~/raspi
+cd ~/raspi
+git clone https://github.com/raspberrypi/tools
+
+mkdir sysroot sysroot/usr sysroot/opt
+rsync -avz --rsh="sshpass -p $RPI_PASSWORD ssh -o StrictHostKeyChecking=no -l $RPI_LOGIN" $RPI_IP:/lib sysroot
+rsync -avz --rsh="sshpass -p $RPI_PASSWORD ssh -o StrictHostKeyChecking=no -l $RPI_LOGIN" $RPI_IP:/usr/include sysroot/usr
+rsync -avz --rsh="sshpass -p $RPI_PASSWORD ssh -o StrictHostKeyChecking=no -l $RPI_LOGIN" $RPI_IP:/usr/lib sysroot/usr
+rsync -avz --rsh="sshpass -p $RPI_PASSWORD ssh -o StrictHostKeyChecking=no -l $RPI_LOGIN" $RPI_IP:/opt/vc sysroot/opt
+
+wget https://raw.githubusercontent.com/Kukkimonsuta/rpi-buildqt/master/scripts/utils/sysroot-relativelinks.py
+chmod +x sysroot-relativelinks.py
+./sysroot-relativelinks.py sysroot
+
+git clone git://code.qt.io/qt/qtbase.git -b $QT_VERSION
+cd qtbase
+./configure -release -opengl es2 -device $RPI_VERSION -device-option CROSS_COMPILE=~/raspi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf- -sysroot ~/raspi/sysroot -opensource -confirm-license -make libs -prefix /usr/local/qt5pi -extprefix ~/raspi/qt5pi -hostprefix ~/raspi/qt5 -v -no-use-gold-linker
+
+make
+make install
+
+cd ..
+rsync -avz --rsh="sshpass -p $RPI_PASSWORD ssh -o StrictHostKeyChecking=no -l $RPI_LOGIN" $RPI_IP:/usr/local
+
+#Make Example
+cd qtbase/examples/opengl/qopenglwidget
+~/raspi/qt5/bin/qmake
+make
+
+scp qopenglwidget pi@raspberrypi.local:/home/pi

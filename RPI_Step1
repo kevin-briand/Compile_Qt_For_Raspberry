@@ -1,3 +1,2 @@
-sudo raspi-config
 sudo rpi-update
 sudo reboot

@@ -31,4 +31,4 @@ cd qtbase/examples/opengl/qopenglwidget
 ~/raspi/qt5/bin/qmake
 make
 
-scp qopenglwidget pi@raspberrypi.local:/home/pi
+scp qopenglwidget $RPI_LOGIN@$RPI_IP:/home/pi

@@ -6,9 +6,9 @@ echo 'Automatic Compile Qt for Raspbian Script'
 echo 'Select Qt version :'
 echo '1 - 5.13.1'
 read var
-if [$var = '1']
+if [ $var = "1" ]
 then
-	version = '5.13.1'
+	version='5.13.1'
 fi
 
 echo 'Select Raspberry version : '
@@ -16,19 +16,17 @@ echo '1 - zero, 1'
 echo '2 - 2'
 echo '3 - 3'
 read var
-if [$var = '1']
+if [ $var = "1" ]
 then
-	RPIVersion = '1'
-fi
-elif [$var = '2']
+	RPIVersion='1'
+elif [ $var = "2" ]
 then
-	RPIVersion = '2'
-elif [$var = '3']
+	RPIVersion='2'
+elif [ $var = "3" ]
 then
-	RPIVersion = '3'
+	RPIVersion='3'
 else
 	echo 'Bad Char !'
-	
 fi
 
 echo 'Set RPI ip :'
@@ -41,16 +39,17 @@ echo 'Set RPI Password :'
 read password
 
 
-if [$RPIVersion != ''] && [$ip != ''] && [$login != ''] && [$password != ''] && [$version != '']
+if [ $RPIVersion != "" ] && [ $ip != "" ] && [ $login != "" ] && [ $password != "" ] && [ $version != "" ]
 then
+	echo 'Install essntial'
+	sudo apt-get install sshpass
+
 	echo 'Run RPI_Step1'
-	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_RPI/RPI_Step1'
+	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_Raspberry/RPI_Step1'
 	echo 'Wait 1 minutes...'
 	sleep 1m
-	echo 'Run RPI_Step2'
-	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_RPI/RPI_Step2'
 	echo 'Run RPI_Step3'
-	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_RPI/RPI_Step3'
+	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_Raspberry/RPI_Step3'
 
 	echo ''
 	sudo apt-get install git rsync make g++
@@ -80,7 +79,7 @@ then
 	rsync -avz --rsh="sshpass -p $password ssh -o StrictHostKeyChecking=no -l $login" $ip:/usr/local
 
 	echo 'Run RPI_Step 5'
-	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_RPI/RPI_Step5'
+	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_Raspberry/RPI_Step5'
 
 	echo '
 Go to Options -> Devices
@@ -113,3 +112,4 @@ Go to Options -> Build & Run
       Qt mkspec: leave empty
 
 '
+fi

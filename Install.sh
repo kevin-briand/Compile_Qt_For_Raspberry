@@ -5,10 +5,14 @@ echo 'Automatic Compile Qt for Raspbian Script'
 
 echo 'Select Qt version :'
 echo '1 - 5.13.1'
+echo '2 - 5.15'
 read var
 if [ $var = "1" ]
 then
 	version='5.13.1'
+elif [ $var = "2" ]
+then
+	version='5.15'
 fi
 
 echo 'Select Raspberry version : '
@@ -31,7 +35,7 @@ fi
 
 echo 'Set RPI ip :'
 read ip
-
+echo $ip
 echo 'Set RPI login :'
 read login
 
@@ -44,12 +48,8 @@ then
 	echo 'Install essntial'
 	sudo apt-get install sshpass
 
-	echo 'Run RPI_Step1'
-	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_Raspberry/RPI_Step1'
-	echo 'Wait 1 minutes...'
-	sleep 1m
 	echo 'Run RPI_Step3'
-	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_Raspberry/RPI_Step3'
+	sshpass -v -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_Raspberry/RPI_Step3'
 
 	echo ''
 	sudo apt-get install git rsync make g++
@@ -79,7 +79,7 @@ then
 	rsync -avz --rsh="sshpass -p $password ssh -o StrictHostKeyChecking=no -l $login" $ip:/usr/local
 
 	echo 'Run RPI_Step 5'
-	sshpass -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_Raspberry/RPI_Step5'
+	sshpass -v -p $password ssh $login@$ip '/home/pi/Compile_Qt_For_Raspberry/RPI_Step5'
 
 	echo '
 Go to Options -> Devices

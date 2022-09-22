@@ -1,8 +1,11 @@
 sudo apt-get update
+sudo apt-get upgrade
 sudo apt-get build-dep qt4-x11
 sudo apt-get build-dep libqt5gui5
 sudo apt-get install libudev-dev libinput-dev libts-dev libxcb-xinerama0-dev libxcb-xinerama0
 
 sudo mkdir /usr/local/qt5pi
 sudo chown pi:pi /usr/local/qt5pi
+sudo mkdir /opt/vc
+sudo chown pi:pi /opt/vc
 
